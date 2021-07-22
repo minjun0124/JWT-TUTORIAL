@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
 /**
  * No.1
  * 토큰의 생성, 토큰의 유효성 검증등을 담당
- *
+ * <p>
  * InitializingBean:afterPropertiesSet() - 빈이 생성되고 생성자 주입 이후 secret 값을 Base64 Decode해서 key변수 할당
  */
 @Component
@@ -55,7 +55,6 @@ public class TokenProvider implements InitializingBean {
 
     /**
      * Authentication 객체의 권한정보를 이용해서 토큰을 생서하는 createToken 메소드 추가
-     *
      */
     public String createToken(Authentication authentication) {
         // Authentication 권한들
@@ -89,12 +88,12 @@ public class TokenProvider implements InitializingBean {
                 .getBody();
 
         // 클레임에서 권한 정보들을 추출출
-       Collection<? extends GrantedAuthority> authorities =
+        Collection<? extends GrantedAuthority> authorities =
                 Arrays.stream(claims.get(AUTHORITIES_KEY).toString().split(","))
                         .map(SimpleGrantedAuthority::new)
                         .collect(Collectors.toList());
 
-       // 권한 정보를 이용해서 User 객체 생성
+        // 권한 정보를 이용해서 User 객체 생성
         User principal = new User(claims.getSubject(), "", authorities);
 
         // 유저 객체와 토큰, 권한정보를 이용해서 Authentication 객체를 리턴
